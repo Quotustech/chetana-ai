@@ -1,0 +1,352 @@
+paths:
+  /auth/register:
+    post:
+      summary: Registers a user
+      description: User needs to provide following details
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+                password:
+                  type: string
+                  description: Password of the user.
+                orgCode:
+                  type: string
+                deptName:
+                  type: string
+                orgName:
+                  type: string
+                department:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+                - orgCode
+                - deptName
+                - orgName
+                - department
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  savedUser:
+                    $ref: "#/components/schemas/User"
+                    example:
+                      id: 123e4567-e89b-12d3-a456-426614174000
+                      name: John Doe
+                      email: johngmail.com
+                      role: user
+                      password: somepassword
+                      orgCode: ORG123
+                      deptName: Engineering
+                      orgName: Acme Corporation
+                  message:
+                    type: string
+                    example: User registered successfully
+        "400":
+          description: |-
+            Invalid organization id or User already exists
+            Choose one of the following messages based on your scenario:
+            - Invalid organization id
+            - User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid organization id or User already exists
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+              properties:
+                error:
+                  type: string
+                message:
+                  type: string
+              example:
+                error: ---- error description ----
+                message: Internal server error
+  /auth/login:
+    post:
+      summary: Login user
+      description: email & password is required  to Login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+                password:
+                  type: string
+              required:
+                - email
+                - password
+              example:
+                email: user@gmail.com
+                password: password
+      responses:
+        "200":
+          description: User login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJyb2xlIjoidXNlciJ9.q8AEDPZHM7hRwVZP9iiv5hLUkso3HRn9dfQpG68l6ps
+                  message: User login successfully
+        "401":
+          description: Invalid credentials. Email or password wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Invalid credentials
+        "403":
+          description: User is not approved (User registered but not approved by department)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User is not approved
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  error: ---- error description ----
+                  message: Internal server error
+  /auth/forgot-password:
+    post:
+      summary: User requests for resetting password
+      description: email is required reset password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+              required:
+                - email
+              example:
+                email: user@gmail.com
+      responses:
+        "200":
+          description: Reset token send successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailOptions:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      subject:
+                        type: string
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            type: object
+                            $ref: "#/components/schemas/User"
+                          resetLink:
+                            type: string
+                      template:
+                        type: string
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                example:
+                  emailOptions:
+                    email: user@gmail.com
+                    subject: Password Reset
+                    data:
+                      user:
+                        id: 123e4567-e89b-12d3-a456-426614174000
+                        name: John Doe
+                        email: john@example.com
+                        role: user
+                        password: somepassword
+                        orgCode: ORG123
+                        deptName: Engineering
+                        orgName: Acme Corporation
+                      resetLink: http://techmatebot.com/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJyb2xlIjoidXNlciJ9.q8AEDPZHM7hRwVZP9iiv5hLUkso3HRn9dfQpG68l6ps
+                  template: reset-password.ejs
+                  success: true
+                  message: Reset token send successfully
+        "404":
+          description: Invalid email entered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: User not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  error: ---- error description ----
+                  message: Internal server error
+# RESET PASSWORD
+  /auth/reset-password/{token}:
+    post:
+      summary: User can reset password
+      description: email is required reset password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+              required:
+                - email
+              example:
+                email: user@gmail.com
+      responses:
+        "200":
+          description: Reset token send successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailOptions:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      subject:
+                        type: string
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            type: object
+                            $ref: "#/components/schemas/User"
+                          resetLink:
+                            type: string
+                      template:
+                        type: string
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                example:
+                  emailOptions:
+                    email: user@gmail.com
+                    subject: Password Reset
+                    data:
+                      user:
+                        id: 123e4567-e89b-12d3-a456-426614174000
+                        name: John Doe
+                        email: john@example.com
+                        role: user
+                        password: somepassword
+                        orgCode: ORG123
+                        deptName: Engineering
+                        orgName: Acme Corporation
+                      resetLink: http://techmatebot.com/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJyb2xlIjoidXNlciJ9.q8AEDPZHM7hRwVZP9iiv5hLUkso3HRn9dfQpG68l6ps
+                  template: reset-password.ejs
+                  success: true
+                  message: Reset token send successfully
+        "404":
+          description: Invalid email entered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: User not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  error: ---- error description ----
+                  message: Internal server error

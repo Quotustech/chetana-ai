@@ -1,0 +1,36 @@
+# Ignore node_modules in the root directory
+node_modules/
+
+# Ignore node_modules in the 'clients/user' folder
+./clients/user/node_modules/
+
+# Ignore env in the 'clients/user' folder
+./clients/user/.env
+
+# Ignore node_modules in the 'clients/dashboard' folder
+./clients/dashboard/node_modules/
+
+# Ignore .next in the 'clients/dashboard' folder
+./clients/dashboard/.next
+
+# Ignore env in the 'clients/dashboard' folder
+./clients/dashboard/.env
+
+# Ignore env in the 'clients/dashboard' folder
+./clients/dashboard/.env
+
+./clients/dashboard/.env
+
+# Ignore node_modules in the 'openai' folder
+./openai/node_modules/
+
+# Ignore env in the 'openai' folder
+./openai/.env
+
+# Ignore uploaded video to temporary folder
+./openai/tmp
+
+
+this git ignore belongs to updated branch
+
+

@@ -1,0 +1,53 @@
+tags:
+  - name: Authentication
+    description: Endpoints related to Login, register
+  - name: Users
+    description: Endpoints related to user management
+info:
+  title: Your API Title
+  description: |
+    This is a general description of your API. You can provide information about what the API does, its intended audience, any special considerations, etc.
+  version: 1.0.0
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user.
+        name:
+          type: string
+        email:
+          type: string
+        role: 
+          type: string 
+        password: 
+          type: string
+        orgCode : 
+          type: string
+        deptName :
+          type: string
+        orgName : 
+          type: string
+        example:
+            id: 123e4567-e89b-12d3-a456-426614174000
+            name: John Doe
+            email: john@example.com
+            role: user
+            password: somepassword
+            orgCode: ORG123
+            deptName: Engineering
+            orgName: Acme Corporation
+    responses:
+        InternalServerError:
+          description: Internal Server Error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error

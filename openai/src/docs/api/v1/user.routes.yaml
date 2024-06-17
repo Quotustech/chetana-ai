@@ -1,0 +1,288 @@
+# User related API end points
+paths:
+  /createuser:
+    post:
+      summary: Create a user from super admin dashboard
+      description: A super admin can create a user directly from dashboard. Add bearer token(super admin) for testing
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                  description: Email address of the user.
+                password:
+                  type: string
+                  description: Password of the user.
+                role:
+                  type: string
+                  description: Admin can specify role
+              required:
+                - name
+                - email
+                - password
+                - role
+              example:
+                name: Anirudh Dash
+                email: anirudh@gmail.com
+                password: anirudh24$#3
+                role: user
+      responses:
+        "200":
+          description: User created successfully by super admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    $ref: "#/components/schemas/User"
+                example:
+                  success: true
+                  message: User created successfully
+                  user:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: ""
+                    deptName: ""
+                    orgName: ""
+        "400":
+          description: |-
+            Not authorized to create account. If anyone other than super admin tries to create user or
+            any error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                example:
+                  message: You are not authorized to create user
+                  success: false
+                  user:
+        "409":
+          description: |-
+            User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                example:
+                  message: Email is already in use.
+                  success: false
+                  user:
+  /updateuser/{id} : 
+    put:
+      summary: user can update profile details
+      description: user can update profile details
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type:
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              example:
+                name: John Doe
+                email: johndoe@gmail.com
+              
+      responses:
+        "200": 
+           description: User details updated successfully
+           content: 
+              application/json:
+                schema:
+                  type: object
+                properties:
+                  updatedUser: 
+                example:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: "org code"
+                    deptName: "deptName"
+                    orgName: "orgName"                               
+  /users/{id}:
+    delete:
+      summary: "Delete a user from dashboard"
+      description: Super admin can delete a user directly from dashboard. Add bearer token(super admin)
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Unique identifier for the user.
+      responses:
+        "200":
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+              properties:
+                message:
+                  type: string
+                deletedUser:
+                  type: object
+                  $ref: "#/components/schemas/User"
+              example:
+                  message: User deleted successfully
+                  deletedUser:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: "org code"
+                    deptName: "deptName"
+                    orgName: "orgName"                
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: User not found
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: 
+                    type: string
+                example:
+                  error: Internal server error
+    get:
+      summary: Get user details by id
+      description: Get user details by id
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Unique identifier for the user.
+      responses:
+        "200":
+          description: User details fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+              properties:
+                user:
+                  type: object
+                  $ref: "#/components/schemas/User"
+              example:
+                  user:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: "org code"
+                    deptName: "deptName"
+                    orgName: "orgName" 
+        "400": 
+          description: User not found
+        "500" :
+          description: Internal server error
+  /users:
+    get:
+      summary: Get all user details
+      tags:
+       - Users 
+      security:
+        - BearerAuth: []       
+      responses:
+        "200":
+          description: Get all users 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: object
+                example:
+                  users:
+                  - id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: "org code"
+                    deptName: "deptName"
+                    orgName: "orgName"
+                  - id: 123e4567-e89b-12d3-a456-426614174000
+                    name: John Doe
+                    email: johngmail.com
+                    role: user
+                    password: somepassword
+                    orgCode: "org code"
+                    deptName: "deptName"
+                    orgName: "orgName"
+                  - ...
+        "400": 
+          description: User not found
+        "500" :
+          description: Internal server error
+
+                    

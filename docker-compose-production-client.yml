@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  user:
+    container_name: client-user
+    restart: unless-stopped
+    image: client-user-production:1.0.0
+    build:
+      context: ./clients/user
+      target: production
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    networks:
+      - shared-network
+
+  dashboard:
+    container_name: client-dashboard
+    restart: unless-stopped
+    image: client-dashboard-production:1.0.0
+    build:
+      context: ./clients/dashboard
+      target: production
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shared-network
+    volumes:
+      - ./clients/dashboard:/app/
+      - /app/node_modules
+      - /app/.next
+
+networks:
+  shared-network:
