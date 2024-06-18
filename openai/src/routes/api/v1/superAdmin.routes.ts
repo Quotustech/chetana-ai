@@ -19,7 +19,7 @@ const authorizedRoles:IAuthorizedRoles = {
   roles:["superadmin"]
 };
 
-router.route("/techmate").post(authCheck(authorizedRoles),validateRouteRequest({ schema: routeValidatorSchemas.createSuperAdmin }), createSuperAdmin);
+router.route("/techmate").post(validateRouteRequest({ schema: routeValidatorSchemas.createSuperAdmin }), createSuperAdmin);
 router
   .route("/techmate/:id")
   .get(authCheck(authorizedRoles) , getSuperAdminById)
