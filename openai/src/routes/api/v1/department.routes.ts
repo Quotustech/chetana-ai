@@ -34,6 +34,6 @@ router
   .delete(authCheck({roles:["superadmin", "admin"]}), deleteDepartmentById)
   .put(authCheck({roles:["superadmin", "admin"]}), updateDepartmentById);
 
-router.route("/department/userapprove").patch(authCheck({roles:["superadmin"]}),validateRouteRequest({ schema: routeValidatorSchemas.approveUser }), approveUser);
+router.route("/department/userapprove").patch(authCheck({roles:["deptadmin"]}),validateRouteRequest({ schema: routeValidatorSchemas.approveUser }), approveUser);
 
 export default router;

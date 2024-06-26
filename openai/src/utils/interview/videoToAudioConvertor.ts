@@ -10,15 +10,15 @@ export const convertToAudio = async (filename: string): Promise<boolean> => {
 
         // Check if video file exists
         if (!fs.existsSync(videoFilePath)) {
-            // console.log("Video file does not exist:", videoFilePath);
+            console.log("Video file does not exist:", videoFilePath);
             return false;
         }
-        // console.log("File checked!");
+        console.log("File checked!");
 
         // Open audio file for writing
         await fs.promises.writeFile(audioFilePath, '')
             .then(() => {
-                // console.log("Audio created");
+                console.log("Audio created");
             })
             .catch((err) => {
                 console.log('--- Unable to create .mp3 file ---', err);
@@ -26,14 +26,14 @@ export const convertToAudio = async (filename: string): Promise<boolean> => {
             })
         // Check if audio file exists
         if (!fs.existsSync(audioFilePath)) {
-            // console.log("audio filePath file does not exist:", audioFilePath);
+            console.log("audio filePath file does not exist:", audioFilePath);
             return false;
         }
 
         const process = await new ffmpeg(videoFilePath);
         return process.fnExtractSoundToMP3(audioFilePath)
             .then((audio) => {
-                // console.log("Audio extracted successfully:", audio);
+                console.log("Audio extracted successfully:", audio);
                 return true;
             })
             .catch((err) => {

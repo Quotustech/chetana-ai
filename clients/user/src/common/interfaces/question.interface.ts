@@ -2,7 +2,8 @@ export interface IJobQuestion{
     _id: string,
     job: string,
     question: string,
-    description : string,
+    // description : string,
     createdAt : string,
-    updatedAt : string
+    updatedAt : string,
+    __v: number;
 }

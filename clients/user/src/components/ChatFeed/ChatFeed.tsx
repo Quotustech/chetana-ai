@@ -123,7 +123,8 @@ const ChatFeed = () => {
         className="relative mb-4 flex h-[88%] flex-col items-center gap-8 overflow-y-scroll"
         ref={chatBoxRef}
       >
-        <header className=" flex justify-center text-4xl">ThechMate</header>
+        {/* Thechmate - Techmate */}
+        <header className=" flex justify-center text-4xl">TechMate</header>
 
         {selectedGroup.chats?.length === 0 || !selectedGroup._id ? (
           <footer className="absolute bottom-0 flex justify-center gap-2 w-full max-w-3xl">

@@ -9,6 +9,8 @@ interface RecordingPhaseType {
   handleInterviewPhase: () => void;
   setInterviewStarted: (value:boolean) => void;
   callBack?: (videoBlob: Blob[]) => void;
+  capturing: boolean;
+  setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RecordingPhases: React.FC<RecordingPhaseType> = ({
@@ -16,12 +18,14 @@ const RecordingPhases: React.FC<RecordingPhaseType> = ({
   handleInterviewPhase,
   setInterviewStarted,
   callBack,
+  capturing,
+  setCapturing
 }) => {
   const webcamRef = useRef<Webcam>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const [capturing, setCapturing] = useState<null | boolean>(false);
+  // const [capturing, setCapturing] = useState<null | boolean>(false);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
-  const [interviewTime, setInterviewTime] = useState<number>(151); // to record 150 sec of video
+  const [interviewTime, setInterviewTime] = useState<number>(150); // to record 150 sec of video
   const timeRef = useRef<number | NodeJS.Timeout>(0);
 
   const handleStartCaptureClick = useCallback(() => {
@@ -52,7 +56,7 @@ const RecordingPhases: React.FC<RecordingPhaseType> = ({
     }
 
     // capturing stopped in less than a second
-    if (capturing === false && interviewTime === 151) {
+    if (capturing === false && interviewTime === 150) {
       clearInterval(timeRef.current);
       setRecordedChunks([]);
     }
@@ -95,7 +99,7 @@ const RecordingPhases: React.FC<RecordingPhaseType> = ({
               audio={true}
               ref={webcamRef}
             />
-            <InterViewTimer className="absolute top-3 left-1 lg:top-5 lg:left-5" time={interviewTime - 1} isRecording={capturing} />
+            {/* <InterViewTimer className="absolute top-3 left-1 lg:top-5 lg:left-5" time={interviewTime - 1} isRecording={capturing} /> */}
          </div>
       </div>
 

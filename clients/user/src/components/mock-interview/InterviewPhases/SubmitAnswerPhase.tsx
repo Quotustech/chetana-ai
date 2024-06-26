@@ -129,82 +129,175 @@ const SubmitAnswerPhase: React.FC<ISubmitAnswer> = ({
   };
 
 
-  const getFeedback = async () => {
-    // const prompt = `Please give feedback on the following interview question: ${currentQsn} given the following candidates answer: ${subTitle}. \n Please also give feedback on the candidate's communication skills. Make sure their response is structured (perhaps using the STAR or PAR frameworks). \n\n\n\ Feedback on the candidate's response:`
-    const prompt = `Please give feedback on the following interview question: ${currentQsn} given the following candidates answer: ${subTitle}.`
-    const instruction = `\n You have to give 4 things regarding the answer & these are no.1 Feedback on candidates answer, no2. Feedback on candidates communication skill, no3. score for answer out of 10 & no4. score for communication skill. These 4 things should start with # symbol & after : your feedback & make sure these four things separated by this characters _$$_ . So your final response should look something like below \n\n
-    #FeedbackOnAnswer:<YOUR_FEEDBACK_ON_ANSWER> _$$_
-    #FeedbackOnCommunication:<YOUR_FEEDBACK_ON_ANSWER> _$$_
-    #Score=<NUMBER_OUT_OF_10> _$$_
-    #CommunicationSCore=<NUMBER_OUT_OF_10>
-    \n\n`
+  // const getFeedback = async () => {
+  //   // const prompt = `Please give feedback on the following interview question: ${currentQsn} given the following candidates answer: ${subTitle}. \n Please also give feedback on the candidate's communication skills. Make sure their response is structured (perhaps using the STAR or PAR frameworks). \n\n\n\ Feedback on the candidate's response:`
+  //   const prompt = `Please give feedback on the following interview question: ${currentQsn} given the following candidates answer: ${subTitle}.`
+  //   const instruction = `\n You have to give 4 things regarding the answer & these are no.1 Feedback on candidates answer, no2. Feedback on candidates communication skill, no3. score for answer out of 10 & no4. score for communication skill. These 4 things should start with # symbol & after : your feedback & make sure these four things separated by this characters _$$_ . So your final response should look something like below \n\n
+  //   #FeedbackOnAnswer:<YOUR_FEEDBACK_ON_ANSWER> _$$_
+  //   #FeedbackOnCommunication:<YOUR_FEEDBACK_ON_ANSWER> _$$_
+  //   #Score=<NUMBER_OUT_OF_10> _$$_
+  //   #CommunicationSCore=<NUMBER_OUT_OF_10>
+  //   \n\n`
 
+  //   const data: IQsnAns = {
+  //     message: prompt,
+  //     apiKeyName: "MOCK_INTERVIEW_KEY",
+  //     instruction
+  //   }
+  //   const token = Cookies.get("authToken");
+  //   try {
+  //     // const res = await fetch(`${ApiUrl}/api/v1/chat`, {
+  //     //   method: "POST",
+  //     //   body: JSON.stringify(data),
+  //     //   headers: {
+  //     //     "Content-Type": "application/json",
+  //     //     Authorization: `Bearer ${token}`,
+  //     //   },
+  //     // });
+
+  //     const res = await fetch(`${ApiUrl}/api/v1/chat`, {
+  //       method: "POST",
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+      
+
+  //     console.log("responsefromfeedback", res);
+  //     if (res.statusText === "OK") {
+  //       const processDataChunk = async (streamData: any) => {
+
+  //         setCount((prev) => prev + 1);
+  //         setIsLoading(false);
+  //         setScrollToFeedback(true);
+
+  //         if (!streamData) return;
+  //         let streamedChat: string = "";
+  //         const reader = streamData.getReader();
+  //         const decoder = new TextDecoder();
+  //         while (true) {
+  //           const readerResult = await reader.read();
+  //           if (!readerResult) {
+  //             // console.log("Reader result is undefined.");
+  //             break;
+  //           }
+  //           const { done, value } = readerResult;
+  //           if (done) {
+  //             // console.log("Stream ended");
+  //             updateAttemptedQsn(subTitle, streamedChat);
+  //             const { feedbackOnAnswer, feedbackOnCommunication } = extractFeedbackInfo(streamedChat);
+  //             setUserFeedback((prev) => {
+  //               return { ...prev, isTobeShown: true, feedbackOnAnswer, feedbackOnCommunication }
+  //             });
+  //             setInterviewStarted(false); // Feedback completed now set interview state to false to show home button
+  //             break;
+  //           }
+  //           // Process the chunk of data
+  //           const decodedChunk = decoder.decode(value);
+  //           streamedChat += decodedChunk;
+  //           setFeedback(streamedChat)
+  //         }
+  //       };
+  //       processDataChunk(res.body)
+  //     } else {
+  //       setIsLoading(false);
+  //       throw new Error("error while getting response from openai");
+  //     }
+  //   } catch (error) {
+  //     // console.log("--- Error in getting feedback ---", error);
+  //     setIsLoading(false);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (isVideoProcessed) {
+  //     console.log("subtitle1", subTitle)
+  //     // call API for feedback
+  //     getFeedback()
+  //   }
+  // }, [isVideoProcessed, subTitle])
+
+  // new feedback with axiosauthinstance
+
+  const getFeedback = async () => {
+    const prompt = `Please give feedback on the following interview question: ${currentQsn} given the following candidates answer: ${subTitle}.`;
+    const instruction = `\n You have to give 4 things regarding the answer & these are no.1 Feedback on candidates answer, no2. Feedback on candidates communication skill, no3. score for answer out of 10 & no4. score for communication skill. These 4 things should start with # symbol & after : your feedback & make sure these four things separated by this characters _$$_ . So your final response should look something like below \n\n
+      #FeedbackOnAnswer:<YOUR_FEEDBACK_ON_ANSWER> _$$_
+      #FeedbackOnCommunication:<YOUR_FEEDBACK_ON_ANSWER> _$$_
+      #Score=<NUMBER_OUT_OF_10> _$$_
+      #CommunicationScore=<NUMBER_OUT_OF_10>
+      \n\n`;
+  
     const data: IQsnAns = {
       message: prompt,
       apiKeyName: "MOCK_INTERVIEW_KEY",
       instruction
-    }
+    };
+  
     const token = Cookies.get("authToken");
+  
     try {
-      const res = await fetch(`${ApiUrl}/api/v1/chat`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.statusText === "OK") {
-        const processDataChunk = async (streamData: any) => {
-
+      const res = await axiosAuthInstance.post(
+        `${ApiUrl}/api/v1/chat`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          responseType: 'blob' // Receive the response as a blob
+        }
+      );
+  
+      if (res.status === 200) {
+        const processDataChunk = async (blob: Blob) => {
           setCount((prev) => prev + 1);
           setIsLoading(false);
           setScrollToFeedback(true);
-
-          if (!streamData) return;
-          let streamedChat: string = "";
-          const reader = streamData.getReader();
-          const decoder = new TextDecoder();
-          while (true) {
-            const readerResult = await reader.read();
-            if (!readerResult) {
-              // console.log("Reader result is undefined.");
-              break;
-            }
-            const { done, value } = readerResult;
-            if (done) {
-              // console.log("Stream ended");
-              updateAttemptedQsn(subTitle, streamedChat);
-              const { feedbackOnAnswer, feedbackOnCommunication } = extractFeedbackInfo(streamedChat);
-              setUserFeedback((prev) => {
-                return { ...prev, isTobeShown: true, feedbackOnAnswer, feedbackOnCommunication }
-              });
-              setInterviewStarted(false); // Feedback completed now set interview state to false to show home button
-              break;
-            }
-            // Process the chunk of data
-            const decodedChunk = decoder.decode(value);
-            streamedChat += decodedChunk;
-            setFeedback(streamedChat)
-          }
+  
+          if (!blob) return;
+          let streamedChat = "";
+  
+          const reader = new FileReader();
+          reader.onload = () => {
+            streamedChat += reader.result as string;
+            setFeedback(streamedChat);
+          };
+          reader.onloadend = () => {
+            updateAttemptedQsn(subTitle, streamedChat);
+            const { feedbackOnAnswer, feedbackOnCommunication } = extractFeedbackInfo(streamedChat);
+            setUserFeedback({
+              isTobeShown: true,
+              feedbackOnAnswer,
+              feedbackOnCommunication
+            });
+            setInterviewStarted(false); // Feedback completed now set interview state to false to show home button
+          };
+          reader.readAsText(blob);
         };
-        processDataChunk(res.body)
+  
+        processDataChunk(res.data);
       } else {
         setIsLoading(false);
-        throw new Error("error while getting response from openai");
+        console.error(`API response error: ${res.statusText}`);
+        throw new Error(`API response error: ${res.statusText}`);
       }
     } catch (error) {
-      // console.log("--- Error in getting feedback ---", error);
+      console.error("Error in getting feedback:", error);
       setIsLoading(false);
     }
-  }
-
+  };
+  
   useEffect(() => {
     if (isVideoProcessed) {
-      // call API for feedback
-      getFeedback()
+      console.log("subtitle1", subTitle)
+      getFeedback();
     }
-  }, [isVideoProcessed, subTitle])
+  }, [isVideoProcessed, subTitle]);
+  
+   
 
   const handleRetry = () => {
     // set interview state to 1

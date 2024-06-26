@@ -64,7 +64,7 @@ export default function Register() {
 
   const [selectedOrg, setSelectedOrg] = useState<Organization>({} as Organization);
   const [selectedDept, setSelectedDept] = useState<Department>({} as Department);
-  const initialState = { email: "", password: "" , name: ''};
+  const initialState = { email: "", password: "" , name: ""};
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -144,6 +144,12 @@ export default function Register() {
       setLoading(false)
     }
   };
+
+  // Reset the form data when the component mounts
+  useEffect(() => {
+    setFormData(initialState);
+  }, []);
+
 
 
   return (
