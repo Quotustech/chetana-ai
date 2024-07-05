@@ -175,6 +175,49 @@ export const forgotPassword = createAsyncThunk(
   }
 );
 
+interface ResetPasswordPayload {
+  success: boolean;
+  message: string;
+  data: null;
+}
+
+// export const resetPassword = createAsyncThunk(
+//   "auth/resetPassword",
+//   async ({ token, password }: { token: string, password: string }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post<ResObject<null>>(`/api/auth/reset-password/${token}`, { newPassword: password });
+//       return response.data;
+//     } catch (error: any) {
+//       if (!error.response) {
+//         throw error;
+//       }
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+
+export const resetPassword = createAsyncThunk<
+  ResObject<null>,
+  { token: string; password: string },
+  { rejectValue: SerializedError }
+>(
+  'auth/resetPassword',
+  async ({ token, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${ApiUrl}/api/v1/auth/reset-password/${token}`, {token, newPassword: password });
+      return response.data;
+    } catch (error: any) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+
 export const logout = createAsyncThunk("user/logout", async () => {
   Cookies.remove("authToken");
   return { logout: true };

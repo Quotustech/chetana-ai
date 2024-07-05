@@ -228,6 +228,7 @@ paths:
                         deptName: Engineering
                         orgName: Acme Corporation
                       resetLink: http://techmatebot.com/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJyb2xlIjoidXNlciJ9.q8AEDPZHM7hRwVZP9iiv5hLUkso3HRn9dfQpG68l6ps
+                        # resetLink: http://localhost:3000/auth/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJyb2xlIjoidXNlciJ9.q8AEDPZHM7hRwVZP9iiv5hLUkso3HRn9dfQpG68l6ps
                   template: reset-password.ejs
                   success: true
                   message: Reset token send successfully

@@ -24,6 +24,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@react-pdf/renderer": "^3.4.2",
     "@reduxjs/toolkit": "^2.2.1",
+    "@types/react-router-dom": "^5.3.3",
     "@types/react-speech-recognition": "^3.9.5",
     "@uiw/codemirror-theme-bbedit": "^4.21.24",
     "@uiw/codemirror-theme-tokyo-night": "^4.21.24",

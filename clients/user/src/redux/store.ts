@@ -25,8 +25,8 @@ import {
   });
   
   export type RootState = ReturnType<typeof store.getState>;
-  
-  type AppDispatch = typeof store.dispatch;
+  //added export 
+ export type AppDispatch = typeof store.dispatch;
   
   export const useDispatch = () => useDispatchBase<AppDispatch>();
   
@@ -34,3 +34,5 @@ import {
     selector: (state: RootState) => TSelected,
   ): TSelected => useSelectorBase<RootState, TSelected>(selector);
   
+  //added
+  export default store;
