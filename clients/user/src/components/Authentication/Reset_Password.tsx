@@ -25,8 +25,8 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 
 const resetPasswordSchema = z.object({
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
+  confirmPassword: z.string().min(8, "Password must be at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
 });
 
 interface FormErrors {

@@ -50,9 +50,19 @@ const CreateUserForm = () => {
       validationErrors.email = "email is required";
     }
 
+    // if (!orgFormData.password.trim()) {
+    //   validationErrors.password = "password is required";
+    // }
+
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
     if (!orgFormData.password.trim()) {
-      validationErrors.password = "password is required";
+      validationErrors.password = "Password is required and must contain at least 8 characters";
+    } else if (!regex.test(orgFormData.password.trim())) {
+      validationErrors.password = "Password must contain at least 8 characters .Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
+    
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       toast.error("Please fix the errors in the form");

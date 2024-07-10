@@ -22,10 +22,12 @@ import Cookies from "js-cookie";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import { useSelector, RootState } from "@/redux/store";
+import  Head  from "next/head";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address").min(1, "Email is required"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string()
+  // .min(8, "Password must be at least 8 characters"),
 });
 
 interface FormErrors {
@@ -142,160 +144,161 @@ export default function Login() {
 
 //chnged ui when clicking forgot pswd only send an email 
 return (
+  <>
+  <Head>
+    <title>TechMate-Login</title>
+  </Head>
   <div className="relative flex h-svh w-full bg-white">
-    <div className="absolute hidden h-full w-full bg-white lg:block">
-      <div className="h-[50%] bg-[#0e1525]"></div>
-    </div>
-    <div className="left z-10 hidden w-[50%] bg-[#0e1525] lg:block xl:rounded-br-[40%]"></div>
-    <div className="right z-10 flex w-full flex-col items-center justify-center gap-3 bg-white lg:w-[50%] xl:rounded-tl-[40%]">
-      {!showForgotpass ? (
-        <form
-          className="mx-auto flex w-11/12 flex-col justify-center space-y-6 sm:max-w-md xl:max-w-lg "
-          onSubmit={handleSubmit}
-        >
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-center text-2xl">Login</CardTitle>
-              <CardDescription className="text-center">
-                Enter your email and password to login
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder=""
-                  onChange={handleInputChange}
-                  value={formData.email}
-                />
-                {errors.email && (
-                  <p className="text-tiny text-danger">{errors.email}</p>
-                )}
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  onChange={handleInputChange}
-                  value={formData.password}
-                />
-                {errors.password && (
-                  <p className="text-tiny text-danger">{errors.password}</p>
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="terms"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowPassword((prev) => !prev);
-                    }}
-                  />
-                  <span className="text-sm font-medium cursor-default">
-                    Show Password
-                  </span>
+      <div className="absolute hidden h-full w-full bg-white lg:block">
+        <div className="h-[50%] bg-[#0e1525]"></div>
+      </div>
+      <div className="left z-10 hidden w-[50%] bg-[#0e1525] lg:block xl:rounded-br-[40%]"></div>
+      <div className="right z-10 flex w-full flex-col items-center justify-center gap-3 bg-white lg:w-[50%] xl:rounded-tl-[40%]">
+        {!showForgotpass ? (
+          <form
+            className="mx-auto flex w-11/12 flex-col justify-center space-y-6 sm:max-w-md xl:max-w-lg "
+            onSubmit={handleSubmit}
+          >
+            <Card>
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-center text-2xl">Login</CardTitle>
+                <CardDescription className="text-center">
+                  Enter your email and password to login
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    value={formData.email} />
+                  {errors.email && (
+                    <p className="text-tiny text-danger">{errors.email}</p>
+                  )}
                 </div>
-                <div>
-                  <p
-                    className="cursor-pointer self-end text-tiny"
-                    onClick={() => setShowForgotpass(true)}
-                  >
-                    Forgot password?
-                  </p>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    onChange={handleInputChange}
+                    value={formData.password} />
+                  {errors.password && (
+                    <p className="text-tiny text-danger">{errors.password}</p>
+                  )}
                 </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col">
-              <Button
-                className="w-full"
-                type="submit"
-                disabled={loading}
-              >
-                {loading && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Login
-              </Button>
-              <p className="mt-2 text-center text-xs text-gray-700 dark:text-white">
-                Don&apos;t have an account?
-                <Link href="/auth/register">
-                  <span className=" text-zinc-900 hover:underline dark:text-white">
-                    Register
-                  </span>
-                </Link>
-              </p>
-            </CardFooter>
-          </Card>
-        </form>
-      ) : (
-        <div className="forgot-password-form w-11/12 sm:max-w-md xl:max-w-lg">
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-center text-2xl">Reset Password</CardTitle>
-              <CardDescription className="text-center">
-                Enter your email to receive a password reset link
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="resetemail">Enter Email</Label>
-                <Input
-                  id="resetemail"
-                  type="email"
-                  name="resetemail"
-                  onChange={(e) => setResetPassEmail(e.target.value)}
-                  value={resetPassEmail}
-                />
-                {errors.resetPassEmail && (
-                  <p className="text-tiny text-danger">
-                    {errors.resetPassEmail}
-                  </p>
-                )}
-              </div>
-              <Button
-                className="w-full"
-                disabled={sendingEmail}
-                onClick={handleForgotPass}
-              >
-                {sendingEmail && (
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Send Reset Email
-              </Button>
-              <p
-                className="cursor-pointer self-end text-tiny text-center mt-4"
-                onClick={() => setShowForgotpass(false)}
-              >
-                Back to login
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-      <p className="px-8 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our
-        <Link
-          href="/terms"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Terms of Service
-        </Link>
-        and
-        <Link
-          href="/privacy"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Privacy Policy
-        </Link>
-        .
-      </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="terms"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowPassword((prev) => !prev);
+                      } } />
+                    <span className="text-sm font-medium cursor-default">
+                      Show Password
+                    </span>
+                  </div>
+                  <div>
+                    <p
+                      className="cursor-pointer self-end text-tiny"
+                      onClick={() => setShowForgotpass(true)}
+                    >
+                      Forgot password?
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col">
+                <Button
+                  className="w-full"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading && (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Login
+                </Button>
+                <p className="mt-2 text-center text-xs text-gray-700 dark:text-white">
+                  Don&apos;t have an account?
+                  <Link href="/auth/register">
+                    <span className=" text-zinc-900 hover:underline dark:text-white">
+                      Register
+                    </span>
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
+          </form>
+        ) : (
+          <div className="forgot-password-form w-11/12 sm:max-w-md xl:max-w-lg">
+            <Card>
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-center text-2xl">Reset Password</CardTitle>
+                <CardDescription className="text-center">
+                  Enter your email to receive a password reset link
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="resetemail">Enter Email</Label>
+                  <Input
+                    id="resetemail"
+                    type="email"
+                    name="resetemail"
+                    onChange={(e) => setResetPassEmail(e.target.value)}
+                    value={resetPassEmail} />
+                  {errors.resetPassEmail && (
+                    <p className="text-tiny text-danger">
+                      {errors.resetPassEmail}
+                    </p>
+                  )}
+                </div>
+                <Button
+                  className="w-full"
+                  disabled={sendingEmail}
+                  onClick={handleForgotPass}
+                >
+                  {sendingEmail && (
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Send Reset Email
+                </Button>
+                <p
+                  className="cursor-pointer self-end text-tiny text-center mt-4"
+                  onClick={() => setShowForgotpass(false)}
+                >
+                  Back to login
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        <p className="px-8 text-center text-sm text-muted-foreground">
+          By clicking continue, you agree to our
+          <Link
+            href="/terms"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Terms of Service
+          </Link>
+          and
+          <Link
+            href="/privacy"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
+      </div>
     </div>
-  </div>
+    </>
 )
 };

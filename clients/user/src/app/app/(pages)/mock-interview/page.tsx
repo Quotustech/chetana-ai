@@ -7,7 +7,7 @@ type Props = {};
 
 export default function page({}: Props) {
   return (
-    <div className="h-svh overflow-y-scroll">
+    <div className="h-svh overflow-y-scroll dark:bg-[#0e1525] dark:text-white">
       <Hero /> 
       {/* <FeatureSection />  */}
       <JobRole />
