@@ -57,8 +57,16 @@ const CreateDepartmentForm = () => {
       validationErrors.email = "Enter a valid email";
     }
 
+    // if (!deptFormData.password.trim()) {
+    //   validationErrors.password = "password is required";
+    // }
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
     if (!deptFormData.password.trim()) {
-      validationErrors.password = "password is required";
+      validationErrors.password = "Password is required and must contain at least 8 characters";
+    } else if (!regex.test(deptFormData.password.trim())) {
+      validationErrors.password = "Password must contain at least 8 characters .Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
     if (!deptFormData.description.trim()) {
       validationErrors.description = "description is required";

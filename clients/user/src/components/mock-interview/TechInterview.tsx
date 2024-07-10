@@ -331,6 +331,8 @@ const TechInterview = (props: Props) => {
   const [capturing, setCapturing] = useState<boolean>(false);
   const timeRef = useRef<number | NodeJS.Timeout>(0);
   // const currentRoleKey = currentRole as keyof typeof interviewQuestions;
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+
 
   let totalQsns: number = questions.length;
 
@@ -340,6 +342,8 @@ const TechInterview = (props: Props) => {
   // console.log("--- Loading ---", isLoading);
   // console.log("--- questions ---", questions);
   // console.log("--- jobDetails ---", jobDetails);
+
+  
 
   useEffect(() => {
     if (params?.jobid) {
@@ -386,6 +390,7 @@ const TechInterview = (props: Props) => {
       setCapturing(false);
     }
   }, [interviewTime, capturing]);
+
   const updateAttemptedQsn = (userAnswer: string, feedback: string) => {
     const {
       feedbackOnAnswer,
@@ -479,6 +484,59 @@ const TechInterview = (props: Props) => {
   };
 
   console.log("question", questions);
+
+//to check permission for cam & mic
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        if (stream) {
+          setHasPermission(true);
+          stream.getTracks().forEach(track => track.stop()); // Stop the stream immediately
+        }
+      } catch (error) {
+        toast.error('Please allow access to the camera and microphone to start.');
+        setHasPermission(false);
+      }
+    };
+  
+    checkPermissions();
+  }, []);
+
+  const retryPermissions = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      if (stream) {
+        setHasPermission(true);
+        stream.getTracks().forEach(track => track.stop()); // Stop the stream immediately
+      }
+    } catch (error) {
+      toast.error('Please allow access to the camera and microphone to start.');
+      setHasPermission(false);
+    }
+  };
+
+  const handleRetryPermissions = () => {
+    retryPermissions();
+  };
+
+
+  if (!hasPermission) {
+    return (
+      <section className="bg-[#f9f9f9] text-black dark:bg-[#0E1525] dark:text-white flex h-screen overflow-y-auto justify-center items-center">
+        <div className="text-center">
+          <h1 className="text-3xl mb-4">
+            Please allow access to your camera and microphone to start the interview.
+          </h1>
+          <GeneralButton onClick={handleRetryPermissions}>
+            Retry Permissions
+          </GeneralButton>
+        </div>
+      </section>
+    );
+  }
+  
+  
 
   return (
     <section className="bg-[#f9f9f9] text-black dark:bg-[#0E1525] dark:text-white flex h-screen overflow-y-auto justify-center">

@@ -5,6 +5,7 @@ import { useDispatch } from "@/src/Redux/store";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { createOrg } from "@/src/Redux/actions/superAdminAction";
+// import {z} from "zod";
 
 interface ORGFORMDATA {
   name: string;
@@ -26,6 +27,18 @@ const CreateOrganizationForm = () => {
     phoneNumber: 0,
     password: "",
   };
+
+  // const organizationSchema = z.object({
+  //   email: z.string().email("Invalid email address").regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address").min(1, "Email is required"),
+  //   password: z.string().min(8, "Password must be at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
+  //   name: z.string().min(1, "organization name is required"),
+  //   phone: z.string()
+  //   .regex(/^\d{10}$/, "Invalid phone number. Must be exactly 10 digits")
+  //   .min(10, "Phone number is required")
+  //   .max(10, "Phone number must be exactly 10 digits"),
+  
+  // })
+  
   const [orgFormData, setOrgFormData] = useState<ORGFORMDATA>(initialState);
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -63,9 +76,17 @@ const CreateOrganizationForm = () => {
         "phone number should be at least 10 digits";
     }
 
+    // if (!orgFormData.password.trim()) {
+    //   validationErrors.password = "password is required";
+    // }
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
     if (!orgFormData.password.trim()) {
-      validationErrors.password = "password is required";
+      validationErrors.password = "Password is required and must contain at least 8 characters";
+    } else if (!regex.test(orgFormData.password.trim())) {
+      validationErrors.password = "Password must contain at least 8 characters .Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
+    
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       toast.error("Please fix the errors in the form");

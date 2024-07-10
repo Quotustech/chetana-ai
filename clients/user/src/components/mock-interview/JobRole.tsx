@@ -28,13 +28,14 @@ const BoxComponent = ({ name, role , jobId}: { name: string, role: string, jobId
 const JobRole = (props: Props) => {
 
     const dispatch = useDispatch();
-    const { isError, isLoading, jobs } = useSelector((state: RootState) => state.jobReducer);
+    // const isLoading =true
+    const { isError,isLoading, jobs } = useSelector((state: RootState) => state.jobReducer);
     useEffect(() => {
         dispatch(getJobs())
     }, [dispatch]);
     
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div className="bg-[#f9f9f9] text-black dark:bg-[#0e1525] dark:text-white flex items-center justify-center h-32 ">Loading...</div>;
     }
 
     if (isError) {
@@ -42,16 +43,19 @@ const JobRole = (props: Props) => {
     }
 
     return (
-        <div className="bg-[#f9f9f9] text-black dark:bg-[#0E1525] dark:text-white p-1 md:p-4 flex flex-col items-center">
+        <div className="bg-[#f9f9f9] text-black dark:bg-[#0e1525] dark:text-white p-1 md:p-4 flex flex-col items-center">
             <div>
                 <h1 className="dark:text-[hsl(218,81%,95%)] mb-7 sm:text-lg md:text-xl lg:text-4xl  font-semibold p-5 pb-1 md:p-11 mt-3">
                     Utilise the most popular job roles to begin your
                     <span className='text-[hsl(218,81%,75%)] font-semibold'> Mock Interview</span>
                 </h1>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 pb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 pb-5 ">
                 {isLoading ?
-                    <h1>Loading...</h1>
+                <div className="bg-[#f9f9f9] text-black dark:bg-[#0e1525] dark:text-white flex items-center justify-center h-32">
+                <h1>Loading...</h1>
+              </div>
+                    // <h1>Loading...</h1>
                     :
                     <>
                         {jobs.map((role: IJob) => (

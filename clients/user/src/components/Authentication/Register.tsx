@@ -34,10 +34,11 @@ import { Department } from "@/common/interfaces/department.interface";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ReloadIcon } from "@radix-ui/react-icons"
+import Head from "next/head";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email address").regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address").min(1, "Email is required"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters").regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
   name: z.string().min(1, "User name is required")
 })
 
@@ -154,20 +155,23 @@ export default function Register() {
 
   return (
     <>
+    <Head>
+        <title>TechMate-Register</title>
+      </Head>
       <div className="h-svh bg-white flex relative w-full">
         <div className="absolute hidden lg:block w-full h-full bg-white">
           <div className="h-[50%] bg-[#0e1525]"></div>
         </div>
         <div className="right lg:w-[50%] w-full z-10 bg-white flex justify-center items-center flex-col gap-3 xl:rounded-tr-[40%]">
           <form className="mx-auto flex w-11/12 flex-col justify-center space-y-6 xl:max-w-lg sm:max-w-md " onSubmit={handleSubmit}>
-            <Card>
+            <Card className="mt-[100px] space-y-1">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl text-center">Register</CardTitle>
                 <CardDescription className="text-center">
                   Fill the form to Register
                 </CardDescription>
               </CardHeader>
-              <CardContent className="grid gap-4">
+              <CardContent className="grid gap-3">
                 <div className="grid gap-2">
                   <Label htmlFor="name">User Name</Label>
                   <Input
@@ -284,3 +288,6 @@ export default function Register() {
     </>
   );
 }
+
+
+
