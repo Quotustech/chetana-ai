@@ -442,14 +442,19 @@ const CodeTranspiler = () => {
   const handleSubmit = async ({optimise}: {optimise: boolean}) => {
     dispatch(setTranslating(true));
 
-    if (!inputLang) {
-      showInfoToast("Please fill the input language field.");
-    } else if (!inputCode) {
+    // if (!inputLang) {
+    //   showInfoToast("Please fill the input language field.");
+    //   return
+    // } else 
+    if (!inputCode) {
       showInfoToast("Please fill the input code field.");
+      return
     } else if (!outputLang) {
       showInfoToast("Please fill the output language field.");
+      return
     }else if(inputLang === outputLang){
       showInfoToast(`Code already in ${inputLang}`);
+      return
     }
 
     const instruction = "Techmate is a friendly chatbot that specializes in computer science topics and kindly declines non-technical questions.\n\nTechmate helps in transpiling code from one programming language to another. If you need to transpile code, make sure you only provide the desired transpiled code within code blocks or fences, suitable for Markdown parsers."
@@ -511,13 +516,13 @@ const CodeTranspiler = () => {
         <section className="flex lg:flex-row justify-between gap-2 items-center flex-col">
           <div className={`w-full mt-7 md:mt-0 relative group ${isSmall ? "h-[50vh]" : "h-[75vh]"} code-mirror-container`}>
             <Select
-              onValueChange={(value) => dispatch(setInputLang(value))}
-              required
+              // onValueChange={(value) => dispatch(setInputLang(value))}
+              // required
             >
               <SelectTrigger id="inp-lang" className="w-full mb-3">
-                <SelectValue placeholder="Select an input Language" />
+                <SelectValue placeholder="Enter your input code" />
               </SelectTrigger>
-              <SelectContent className="z-[99999]">
+              {/* <SelectContent className="z-[99999]">
                 <SelectGroup>
                   {languageData.map((lang) => {
                     return (
@@ -527,8 +532,9 @@ const CodeTranspiler = () => {
                     );
                   })}
                 </SelectGroup>
-              </SelectContent>
-            </Select>
+              </SelectContent>*/}
+            </Select> 
+            {/* <p className="w-full mb- outline">Enter your input code</p> */}
             {isSmall && (
               <>
                 <div className="flex w-full mb-3">
