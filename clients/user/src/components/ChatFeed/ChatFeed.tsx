@@ -53,7 +53,7 @@ const ChatFeed = () => {
   const handleShareLink = () => {
     // console.log("link");
     if (selectedGroup._id) {
-      const shareLink = `http://localhost:3000/app/share/${selectedGroup._id}`;
+      const shareLink = `https://techmatebot.com/app/share/${selectedGroup._id}`;
       clipboard
         .writeText(shareLink)
         .then(() => {
