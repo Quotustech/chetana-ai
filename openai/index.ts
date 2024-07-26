@@ -17,6 +17,7 @@ import { title } from 'process';
 import { version } from 'os';
 import { ErrorMiddleware } from './src/middleware/error';
 import ErrorHandler from './src/utils/ErrorHandler';
+import createDefaultSuperAdmin from './src/utils/createDefaultSuperAdmin';
 
 // Set up module alias
 moduleAlias.addAlias('@deep', path.join(__dirname, 'deep'));
@@ -55,9 +56,11 @@ const DB = process.env.DATABASE_URL as string;
 
 mongoose
   .connect(DB)
-  .then(() => {
+  .then(async () => {
     // seedData()
     console.log("Database connected");
+    // create default admin user
+    await createDefaultSuperAdmin();
   })
   .catch((error: any) => console.log("no connection", error));
 
