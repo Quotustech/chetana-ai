@@ -18,6 +18,8 @@ const superAdminColumns = [
   { name: "deptHeadName" },
   { name: "email" },
   { name: "name" },
+  // ,bug04
+  // { name: "Department" },
   { name: "organization" },
 ];
 

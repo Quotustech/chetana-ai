@@ -276,7 +276,8 @@ const SignIn: React.FC = () => {
                         <Loader2 className="ml-4 w-6 h-6 animate-spin" />
                       </>
                     ) : (
-                      <>Login</>
+                      // <>Login</>
+                      <>Sign In</>
                     )}{" "}
                   </button>
                 </div>

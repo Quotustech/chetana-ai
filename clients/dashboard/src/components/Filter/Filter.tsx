@@ -15,7 +15,10 @@ export default function FilterComponent() {
       const { allDepartments} = useSelector(
         (state: RootState) => state.organizationReducer
       );
-      const { orgs , depts} = useSelector(
+      // const { orgs , depts} = useSelector(
+      //   (state: RootState) => state.filterReducer
+      // );
+      const { filteredOrgs, filteredDepts } = useSelector(
         (state: RootState) => state.filterReducer
       );
       const { organizations , approvedDepts } = useSelector(
@@ -27,8 +30,10 @@ export default function FilterComponent() {
     const uniqueAllDepts = new Set(allDepartments.map((dept: { name: string; }) => dept.name));
     const uniqueAllDeptsArray = [...uniqueAllDepts]
 
-    const [selectedOrgs, setSelectedOrgs] = React.useState(orgs as string[]);
-    const [selectedDepts, setSelectedDepts] = React.useState(depts as string[]);
+    // const [selectedOrgs, setSelectedOrgs] = React.useState(orgs as string[]);
+    // const [selectedDepts, setSelectedDepts] = React.useState(depts as string[]);
+    const [selectedOrgs, setSelectedOrgs] = React.useState(filteredOrgs);
+    const [selectedDepts, setSelectedDepts] = React.useState(filteredDepts);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     useEffect(() => {
