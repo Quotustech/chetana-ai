@@ -530,7 +530,7 @@ recognition.onerror = (event) => {
       )}
       <footer className="hidden md:block">
         <div className="relative text-sm text-gray-400 sm:hidden lg:flex lg:justify-center">
-          ctrl + k to create new chat
+          Press Ctrl + k to create new chat
         </div>
       </footer>
     </div>

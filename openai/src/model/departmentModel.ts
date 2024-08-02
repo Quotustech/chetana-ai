@@ -2,7 +2,8 @@ import mongoose, { Document, Schema } from "mongoose";
 import User, { IUser } from "./userModel";
 
 interface IDepartment extends Document {
-  name: string;
+  // name: string;
+  department: string;
   deptHeadName: string;
   email: string;
   password: string;
@@ -21,7 +22,12 @@ const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const departmentSchema: Schema<IDepartment> = new Schema(
   {
-    name: {
+    // name: {
+    //   type: String,
+    //   required: true,
+    //   set: capitalizeName,
+    // },
+    department: {
       type: String,
       required: true,
       set: capitalizeName,
@@ -72,7 +78,8 @@ departmentSchema.pre<IDepartment>("save", async function (next) {
       name: this.deptHeadName,
       role: "deptadmin",
       status: this.status,
-      deptName: this.name,
+      // deptName: this.name,
+      deptName:this.department,
       organization: this.organization
     });
 

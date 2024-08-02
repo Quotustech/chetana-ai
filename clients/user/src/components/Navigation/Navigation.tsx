@@ -77,7 +77,7 @@ const Navigation = () => {
                 <Link href="/" className="bg-[#f9f9f9] dark:bg-[#1c2333] hover:bg-gray-200 h-11 flex flex-col justify-center items-center rounded-md mb-1 text-center">
                   <BsRobot className="text-[1.8rem]" />
                 </Link>
-                <p className="text-tiny text-center">Chat Bot</p>
+                <p className="text-tiny text-center">ChatBot</p>
               </li>
             </Tooltip>
             <Tooltip

@@ -162,10 +162,10 @@ export const sampleQuestions = [
     },
     {
         question: "What is javascript?",
-        request: "write a sample code init."
+        request: "write a sample code in it."
     },
     {
         question: "What is python?",
-        request: "write a sample code init."
+        request: "write a sample code in it."
     }
 ]

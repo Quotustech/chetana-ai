@@ -8,6 +8,7 @@ import { Building, Building2, MessagesSquare } from "lucide-react";
 import { Cable } from "lucide-react";
 
 const deptColumns = [{ name: "name" }, { name: "email" }, { name: "action" }];
+// const deptColumns = [{ name: "department" }, { name: "email" }, { name: "action" }];
 const adminColumns = [
   { name: "name" },
   { name: "email" },
@@ -17,9 +18,9 @@ const adminColumns = [
 const superAdminColumns = [
   { name: "deptHeadName" },
   { name: "email" },
-  { name: "name" },
+  // { name: "name" },
   // ,bug04
-  // { name: "Department" },
+  { name: "department" },
   { name: "organization" },
 ];
 

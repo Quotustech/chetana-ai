@@ -160,16 +160,16 @@ const TableFive: React.FC<TableProps> = ({ columns, type }) => {
   //this returns conditional user || organization || department  array to map in the table
   const tableData = useCallback((): (User | Organization | Department)[] => {
     const roleData: RoleData = {
-      admin: {
-        users: orgUsers,
-        approvals: orgUsers,
-        departments: allDepartments,
-      },
       superadmin: {
         organizations: organizations,
         approvals: pendingDepts,
         users: users,
         departments: approvedDepts,
+      },
+      admin: {
+        users: orgUsers,
+        approvals: orgUsers,
+        departments: allDepartments,
       },
       deptadmin: {
         approvals: pendingUsers,
@@ -228,21 +228,73 @@ const TableFive: React.FC<TableProps> = ({ columns, type }) => {
       });
       itemsArray = temp.flat();
     }
+
+    // if (searchQuery.trim()) {
+    //   itemsArray = itemsArray.filter((obj) => {
+    //     // Checking if any key's value includes the search string
+    //     return Object.values(obj).some((value) => {
+    //       if (typeof value === "string") {
+    //         console.log("value: " + value);
+    //         console.log("obj: " + obj);
+    //         return value
+    //           .toLowerCase()
+    //           .includes(searchQuery.trim().toLowerCase());
+    //       }
+    //       //addition
+    //       if (typeof value === "object" && value !== null && "name" in value) {
+    //         return (value as { name: string }).name
+    //           .toLowerCase()
+    //           .includes(searchQuery.trim().toLowerCase());
+    //       }
+    //       //end
+    //       return false;
+    //     });
+    //   });
+    // }
+
+
     if (searchQuery.trim()) {
       itemsArray = itemsArray.filter((obj) => {
-        // Checking if any key's value includes the search string
-        return Object.values(obj).some((value) => {
-          if (typeof value === "string") {
-            return value
+        return (
+          ("deptHeadName" in obj &&
+            typeof obj.deptHeadName === "string" &&
+            obj.deptHeadName
               .toLowerCase()
-              .includes(searchQuery.trim().toLowerCase());
-          }
-          return false;
-        });
+              .includes(searchQuery.trim().toLowerCase())) ||
+          ("name" in obj &&
+            typeof obj.name === "string" &&
+            obj.name.toLowerCase().includes(searchQuery.trim().toLowerCase())) ||
+          ("email" in obj &&
+            typeof obj.email === "string" &&
+            obj.email.toLowerCase().includes(searchQuery.trim().toLowerCase())) ||
+            ("phoneNumber" in obj &&
+              typeof obj.phoneNumber === "number" &&
+              obj.phoneNumber.toString().includes(searchQuery.trim())) ||
+          ("organization" in obj &&
+            typeof obj.organization === "object" &&
+            "name" in obj.organization &&
+            typeof obj.organization.name === "string" &&
+            obj.organization.name
+              .toLowerCase()
+              .includes(searchQuery.trim().toLowerCase())) ||
+              // add
+              ("department" in obj &&
+                typeof obj.department === "object" &&
+                "name" in obj.department &&
+                typeof obj.department.name === "string" &&
+                obj.department.name
+                  .toLowerCase()
+                  .includes(searchQuery.trim().toLowerCase()))
+        );
       });
     }
+    
     return itemsArray;
   }, [orgs, depts, searchQuery, tableData]);
+ 
+  // console.log("orgs",tableData)
+
+  // console.log("searchQuery",depts)
 
   //pagination controll
   const pages = Math.ceil(filteredData().length / rowsPerPage);
@@ -336,7 +388,12 @@ const TableFive: React.FC<TableProps> = ({ columns, type }) => {
                     return (
                       <TableCell
                         key={colIndex}
-                        title={(rowData as any)[column.name]}
+                        // title={(rowData as any)[column.name]}
+                        title={
+                          column.name === "department"
+                            ? (rowData as any)["name"]
+                            : (rowData as any)[column.name]
+                        }
                         className={`${
                           (type === "approvals" || type === "users") &&
                           "cursor-pointer"
@@ -359,11 +416,30 @@ const TableFive: React.FC<TableProps> = ({ columns, type }) => {
                           }
                         }}
                       >
+                        {/* {column.name === "organization"
+                          ? (rowData as any)[column.name]?.name */}
+
+                        {/* {column.name === "organization"
+    ? (rowData as any)["name"]  new*/}
+
                         {column.name === "organization"
-                          ? (rowData as any)[column.name]?.name
+                          ? typeof (rowData as any)["organization"] === "object"
+                            ? (rowData as any)["organization"].name
+                            : (rowData as any)["name"]
                           : column.name === "department"
-                          ? (rowData as any)[column.name]?.name
-                          : (rowData as any)[column.name]}
+                          ? //old
+                            // ? (rowData as any)[column.name]?.name
+                            //new
+                            // ? (rowData as any)["name"]
+                            //new2
+                            // Check if rowData is a user and has a department field
+                            typeof (rowData as any)["department"] ===
+                              "object" &&
+                            (rowData as any)["department"] !== null
+                            ? (rowData as any)["department"].name
+                            : (rowData as any)["name"]
+                          : // new2end
+                            (rowData as any)[column.name]}
                       </TableCell>
                     );
                   })}

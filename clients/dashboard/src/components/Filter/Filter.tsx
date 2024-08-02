@@ -79,7 +79,7 @@ export default function FilterComponent() {
                 </CheckboxGroup>
 
                 </div>}
-                <div className="w-1/2 overflow-hidden max-h-[13rem] h-[13rem] overflow-y-scroll">
+                <div className="w-1/2 overflow-hidden max-h-[13rem] h-[13rem] overflow-y-scroll scrollbar-default">
                 <CheckboxGroup
                     label="Select Depts"
                     value={selectedDepts}

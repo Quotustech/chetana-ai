@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 
 const columns = [
   { name: "sl.no" },
-  { name: "name" },
+  // { name: "name" },
+  { name: "organization" },
   { name: "email" },
   { name: "phoneNumber" }
 ];
