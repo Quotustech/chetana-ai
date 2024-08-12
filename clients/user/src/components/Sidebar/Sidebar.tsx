@@ -118,10 +118,10 @@ const Sidebar = () => {
     >
       <div className="z-[10] flex h-full w-[16rem] flex-col items-center border-x-1 bg-[#f9f9f9] p-1 dark:border-gray-700 dark:bg-[#1c2333] lg:absolute">
         <div
-          className="flex h-[3.5rem] w-full cursor-pointer items-center justify-center gap-3 rounded-md border bg-[#fbfbfb] hover:bg-gray-200 dark:border-gray-400 dark:bg-[#0e1525] dark:hover:bg-[#2b3245]"
+          className="flex h-[3.5rem] w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-gray-700 bg-[#fbfbfb] hover:bg-gray-200 dark:border-gray-400 dark:bg-[#0e1525] dark:hover:bg-[#2b3245]"
           onClick={() => !recentlyGroupCreated && dispatch(createNewGroup(user?._id))}
         >
-          <Plus /> New Chat
+          New Chat<Plus /> 
         </div>
         <ul className="flex h-full w-full flex-col gap-1 overflow-y-scroll pt-8 lg:gap-2">
           {groups?.map((group) => {

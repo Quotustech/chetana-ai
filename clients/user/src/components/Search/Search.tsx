@@ -247,6 +247,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Mic } from "lucide-react"; // Import Mic icon
+import { FaTelegramPlane } from "react-icons/fa";
 import TextareaAutosize from "react-textarea-autosize";
 import { useSelector, RootState, useDispatch } from "@/redux/store";
 import { createNewGroup, sendToOpenAi } from "@/redux/slices/chat/chatActions";
@@ -518,7 +519,9 @@ recognition.onerror = (event) => {
               visible={true}
             />
           ) : (
-            <ArrowUp className="w-8" />
+            // <ArrowUp className="w-8" />
+            // <FaTelegramPlane className="w-8" />
+            <FaTelegramPlane size={24} />
           )}
         </Button>
       </form>

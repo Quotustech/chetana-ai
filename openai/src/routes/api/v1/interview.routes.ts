@@ -8,7 +8,8 @@ import {
     updateJobRole,
     createQuestion,
     getAllQuestionByJobId,
-    deleteQuestionById
+    deleteQuestionById,
+    updateQuestion
 } from "../../../controller/v1/interviewController";
 import { authCheck } from "../../../middleware/authMiddleware";
 import { videoUploadMiddleware } from "../../../middleware/uploadMulterMiddleware";
@@ -52,6 +53,8 @@ router
 router
     .route("/interview/jobrole/question/:id")
     .delete(authCheck({roles:["superadmin"]}), checkValidMongoId, deleteQuestionById)
+    .patch(authCheck({ roles: ["superadmin"] }), checkValidMongoId, updateQuestion); // edit question
+
     // .get(authCheck(authorizedRoles), checkValidMongoId,  )
 
 export default router;

@@ -1,6 +1,7 @@
 import { User } from "./user.interface";
 
 export interface Chat {
+    text: any;
     _id: string;
     user: User;
     question: string;

@@ -12,6 +12,7 @@ import GeneralButton from "../common/GeneralButton";
 import extractFeedbackInfo from "@/utils/extractFromFeedback";
 import { IUserAttempts } from "../TechInterview";
 import { useRouter } from 'next/navigation';
+import TextToSpeech from "@/components/ChatFeed/TextToSpeech";
 
 const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -348,8 +349,10 @@ const SubmitAnswerPhase: React.FC<ISubmitAnswer> = ({
                 handleRetry()
                 setInterviewStarted(false)
               }} backgroundColor={false} >
+               
                 Try again
               </GeneralButton>
+              {/* <TextToSpeech text={currentQsn} autoPlay={true}/> */}
             </div>
           )}
         </>
