@@ -68,6 +68,17 @@ export default function Login() {
   }) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+      if (name === "email" && !loginSchema.shape.email.safeParse(value).success) {
+        delete updatedErrors.email;
+      }
+      if (name === "password" && value.length >= 8) {
+        delete updatedErrors.password;
+      }
+      return updatedErrors;
+    });
   };
 
   // Function to handle form submission
@@ -109,6 +120,18 @@ export default function Login() {
     e.preventDefault();
     try {
       setSendingEmail(true);
+
+      // Check if the email is empty
+    if (!resetPassEmail) {
+      const newErrors = {
+        ...errors,
+        resetPassEmail: "Email is required",
+      };
+      setErrors(newErrors);
+      setSendingEmail(false);
+      return;
+    }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(resetPassEmail)) {
         // console.log("Invalid email address");
@@ -117,6 +140,7 @@ export default function Login() {
           resetPassEmail: "Invalid email address",
         };
         setErrors(newErrors);
+        setSendingEmail(false);
         return;
       }
       await dispatch(forgotPassword(resetPassEmail)).then((result) => {

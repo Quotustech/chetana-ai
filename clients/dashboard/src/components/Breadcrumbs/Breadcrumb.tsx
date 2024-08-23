@@ -22,6 +22,9 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
   const { searchQuery } = useSelector(
     (state: RootState) => state.filterReducer
   );
+  // const { searchQuery, filteredOrgs, filteredDepts } = useSelector(
+  //   (state: RootState) => state.filterReducer
+  // );
   const params = pageName.split("/");
 
   const handleLinkClick = (clickedLink:string) => {
@@ -61,7 +64,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
           path === "/app/dashboard/organizations") && (
           <input
             type="text"
-            placeholder="Search Any"
+            placeholder="Search "
             className={`p-1 border rounded-md ${
               typeof window !== "undefined" && window.innerWidth < 768
                 ? "w-[13rem]"

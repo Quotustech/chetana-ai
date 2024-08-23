@@ -28,7 +28,14 @@ export const languageData = [
         value: 'Java',
         id: 5,
         avatar: '/images/java_logo.png'
+    },
+    {
+        name: 'Haskell',
+        value: 'Haskell',
+        id: 6,
+        avatar: '/images/haskell_logo.png'
     }
+
 ];
 
 
@@ -155,10 +162,10 @@ export const sampleQuestions = [
     },
     {
         question: "What is javascript?",
-        request: "write a sample code init."
+        request: "write a sample code in it."
     },
     {
         question: "What is python?",
-        request: "write a sample code init."
+        request: "write a sample code in it."
     }
 ]

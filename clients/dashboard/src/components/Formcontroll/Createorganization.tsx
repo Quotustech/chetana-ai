@@ -65,16 +65,24 @@ const CreateOrganizationForm = () => {
     }
 
     if (!orgFormData.email.trim()) {
-      validationErrors.email = "email is required";
+      validationErrors.email = "Email is required";
+    }else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orgFormData.email)) {
+      validationErrors.email = "Enter a valid email";
     }
 
-    if (
-      !orgFormData.phoneNumber ||
-      orgFormData.phoneNumber.toString().length < 10
-    ) {
-      validationErrors.phoneNumber =
-        "phone number should be at least 10 digits";
+    // if (
+    //   !orgFormData.phoneNumber ||
+    //   orgFormData.phoneNumber.toString().length < 10
+    // ) {
+    //   validationErrors.phoneNumber =
+    //     "Phone number should be at least 10 digits";
+    // }
+    if (!orgFormData.phoneNumber) {
+      validationErrors.phoneNumber = "Phone number is required";
+    } else if (orgFormData.phoneNumber.toString().length < 10) {
+      validationErrors.phoneNumber = "Phone number should be at least 10 digits";
     }
+    
 
     // if (!orgFormData.password.trim()) {
     //   validationErrors.password = "password is required";

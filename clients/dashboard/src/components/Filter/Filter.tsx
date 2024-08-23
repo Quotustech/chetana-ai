@@ -15,7 +15,10 @@ export default function FilterComponent() {
       const { allDepartments} = useSelector(
         (state: RootState) => state.organizationReducer
       );
-      const { orgs , depts} = useSelector(
+      // const { orgs , depts} = useSelector(
+      //   (state: RootState) => state.filterReducer
+      // );
+      const { filteredOrgs, filteredDepts } = useSelector(
         (state: RootState) => state.filterReducer
       );
       const { organizations , approvedDepts } = useSelector(
@@ -27,8 +30,10 @@ export default function FilterComponent() {
     const uniqueAllDepts = new Set(allDepartments.map((dept: { name: string; }) => dept.name));
     const uniqueAllDeptsArray = [...uniqueAllDepts]
 
-    const [selectedOrgs, setSelectedOrgs] = React.useState(orgs as string[]);
-    const [selectedDepts, setSelectedDepts] = React.useState(depts as string[]);
+    // const [selectedOrgs, setSelectedOrgs] = React.useState(orgs as string[]);
+    // const [selectedDepts, setSelectedDepts] = React.useState(depts as string[]);
+    const [selectedOrgs, setSelectedOrgs] = React.useState(filteredOrgs);
+    const [selectedDepts, setSelectedDepts] = React.useState(filteredDepts);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     useEffect(() => {
@@ -74,7 +79,7 @@ export default function FilterComponent() {
                 </CheckboxGroup>
 
                 </div>}
-                <div className="w-1/2 overflow-hidden max-h-[13rem] h-[13rem] overflow-y-scroll">
+                <div className="w-1/2 overflow-hidden max-h-[13rem] h-[13rem] overflow-y-scroll scrollbar-default">
                 <CheckboxGroup
                     label="Select Depts"
                     value={selectedDepts}

@@ -15,7 +15,8 @@ const columns = [
   { name: "sl.no" },
   { name: "deptHeadName" },
   { name: "email" },
-  { name: "name" },
+  // { name: "name" },
+  { name: "department" },
   { name: "organization" },
   { name: "status" },
 ];

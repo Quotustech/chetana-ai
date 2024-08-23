@@ -290,6 +290,7 @@ import { getQuestions } from "@/redux/slices/question/questionActions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import InterViewTimer from "./common/InterViewTimer";
+import TextToSpeech from "../ChatFeed/TextToSpeech";
 
 type Props = {};
 
@@ -592,6 +593,7 @@ const TechInterview = (props: Props) => {
                     {/* )} */}
                   </div>
                   <p className="text-4xl pl-1">{questions[currentQsn].question}</p>
+                  <TextToSpeech text={questions[currentQsn].question} autoPlay={true} />
                 </div>
               )}
 

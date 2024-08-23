@@ -11,18 +11,38 @@ const FilterSlice = createSlice({
       action: PayloadAction<(typeof filterState)["orgs"]>
     ) {
       state.orgs = action.payload;
+      // addition
+      state.filteredOrgs = action.payload.filter(org => 
+        org.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
     },
     getDepts(
       state: Draft<typeof filterState>,
       action: PayloadAction<(typeof filterState)["depts"]>
     ) {
       state.depts = action.payload;
+      state.filteredDepts = action.payload.filter(dept => 
+        dept.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
     },
+    // getSearch(
+    //   state: Draft<typeof filterState>,
+    //   action: PayloadAction<(typeof filterState)["searchQuery"]>
+    // ) {
+    //   state.searchQuery = action.payload;
+    // },
     getSearch(
       state: Draft<typeof filterState>,
       action: PayloadAction<(typeof filterState)["searchQuery"]>
     ) {
-      state.searchQuery = action.payload;
+      const query = action.payload.toLowerCase();
+      state.searchQuery = query;
+      state.filteredOrgs = state.orgs.filter(org => 
+        org.toLowerCase().includes(query)
+      );
+      state.filteredDepts = state.depts.filter(dept => 
+        dept.toLowerCase().includes(query)
+      );
     },
   },
 });

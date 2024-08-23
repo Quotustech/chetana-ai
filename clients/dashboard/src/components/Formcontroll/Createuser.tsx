@@ -46,8 +46,14 @@ const CreateUserForm = () => {
       validationErrors.name = "Name should only contain letters and spaces";
     }
 
+    // if (!orgFormData.email.trim()) {
+    //   validationErrors.email = "email is required";
+    // }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!orgFormData.email.trim()) {
-      validationErrors.email = "email is required";
+      validationErrors.email = "Email is required";
+    } else if (!emailRegex.test(orgFormData.email.trim())) {
+      validationErrors.email = "Invalid email address";
     }
 
     // if (!orgFormData.password.trim()) {

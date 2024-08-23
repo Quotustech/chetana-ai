@@ -3,6 +3,7 @@ import { Organization } from "./organization.interface";
 export interface Department {
     _id: string;
     name: string;
+    // department: string;
     deptHeadName: string;
     email: string;
     password: string;

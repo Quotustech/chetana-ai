@@ -10,6 +10,7 @@ import ErrorHandler from "../../utils/ErrorHandler";
 
 // import { audioToText } from "@utils/interview/audioToText";
 import mongoose from "mongoose";
+import { closeDelimiter } from "ejs";
 
 
 export const submitVideo = CatchAsyncError(
@@ -200,3 +201,29 @@ export const deleteQuestionById = CatchAsyncError(
         })
     }
 )
+
+export const updateQuestion = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        // console.log("Updating Question")
+        const questionId = req.params.id;
+        const { question } = req.body;
+
+        if (!question) {
+            const err = new ErrorHandler("Question text is required.", 400);
+            return next(err);
+        }
+
+        const updatedQuestion = await Question.findByIdAndUpdate(questionId, { question }, { new: true });
+        
+        if (!updatedQuestion) {
+            const err = new ErrorHandler("Question not found.", 404);
+            return next(err);
+        }
+
+        return res.status(200).json({
+            message: "Question updated successfully.",
+            success: true,
+            data: updatedQuestion
+        });
+    }
+);

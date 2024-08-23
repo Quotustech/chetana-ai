@@ -158,13 +158,15 @@ export default function Register() {
     <Head>
         <title>TechMate-Register</title>
       </Head>
-      <div className="h-svh bg-white flex relative w-full">
+      {/* <div className="h-svh bg-white flex relative w-full"> */}
+      <div className="min-h-screen bg-white flex relative w-full">
         <div className="absolute hidden lg:block w-full h-full bg-white">
           <div className="h-[50%] bg-[#0e1525]"></div>
         </div>
         <div className="right lg:w-[50%] w-full z-10 bg-white flex justify-center items-center flex-col gap-3 xl:rounded-tr-[40%]">
           <form className="mx-auto flex w-11/12 flex-col justify-center space-y-6 xl:max-w-lg sm:max-w-md " onSubmit={handleSubmit}>
-            <Card className="mt-[100px] space-y-1">
+            {/* <Card className="mt-[100px] space-y-1"> */}
+            <Card className="mt-[70px] space-y-1">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl text-center">Register</CardTitle>
                 <CardDescription className="text-center">

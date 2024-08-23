@@ -52,7 +52,7 @@ const CreateDepartmentForm = () => {
     }
 
     if (!deptFormData.email.trim()) {
-      validationErrors.email = "email is required";
+      validationErrors.email = "Email is required";
     }else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(deptFormData.email)) {
       validationErrors.email = "Enter a valid email";
     }

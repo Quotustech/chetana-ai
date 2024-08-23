@@ -25,7 +25,8 @@ const ProfilePage = () => {
           <span className="h-12 w-12 text-[2.5rem] border rounded-full flex justify-center items-center absolute left-0">
             {user.name?.charAt(0)}
           </span>
-          About You
+          {/* About You */}
+          About Me
         </div>
         <form className="flex flex-col gap-2">
           <div className="">
