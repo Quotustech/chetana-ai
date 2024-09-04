@@ -83,10 +83,18 @@ export const Login = CatchAsyncError(
       }
     );
 
+    const adminRoles = ["superadmin", "admin", "departmentadmin", "organizationadmin"];
+
+    // Determine the appropriate message based on the user's role
+    const message = adminRoles.includes(user.role)
+      ? "User signed in successfully"
+      : "User logged in successfully";
+
     return res.status(200).json({
       success: true,
       data: token,
-      message: "User login successfully",
+      message: message,
+      // message: "User signed in successfully",
     });
   }
 );

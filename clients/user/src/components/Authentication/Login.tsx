@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,6 +62,13 @@ export default function Login() {
     router.push("/app");
   }
 
+  // Reset form data and errors when the component mounts
+  useEffect(() => {
+    setFormData(initialState);
+    setErrors({});
+  }, []);
+
+
   // Function to handle input changes
   const handleInputChange = (e: {
     target: { name: string; value: string };
@@ -71,8 +78,16 @@ export default function Login() {
 
     setErrors((prevErrors) => {
       const updatedErrors = { ...prevErrors };
-      if (name === "email" && !loginSchema.shape.email.safeParse(value).success) {
-        delete updatedErrors.email;
+      // if (name === "email" && !loginSchema.shape.email.safeParse(value).success) {
+      //   delete updatedErrors.email;
+      // }
+      if (name === "email") {
+        const emailValidation = loginSchema.shape.email.safeParse(value);
+        if (emailValidation.success) {
+          delete updatedErrors.email; // Clear email error if the input is valid
+        } else {
+          updatedErrors.email = emailValidation.error.errors[0].message;
+        }
       }
       if (name === "password" && value.length >= 8) {
         delete updatedErrors.password;
@@ -93,6 +108,9 @@ export default function Login() {
           const payload = result.payload;
           if (payload.success) {
             toast.success(payload.message);
+            // Clear form data and errors on successful login
+            setFormData(initialState);
+            setErrors({});
             router.push("/app");
           }
         } else if (login.rejected.match(result)) {
@@ -169,9 +187,7 @@ export default function Login() {
 //chnged ui when clicking forgot pswd only send an email 
 return (
   <>
-  <Head>
-    <title>TechMate-Login</title>
-  </Head>
+  
   <div className="relative flex h-svh w-full bg-white">
       <div className="absolute hidden h-full w-full bg-white lg:block">
         <div className="h-[50%] bg-[#0e1525]"></div>
@@ -250,7 +266,7 @@ return (
                   Login
                 </Button>
                 <p className="mt-2 text-center text-xs text-gray-700 dark:text-white">
-                  Don&apos;t have an account?
+                  Don&apos;t have an account?{" "}
                   <Link href="/auth/register">
                     <span className=" text-zinc-900 hover:underline dark:text-white">
                       Register
@@ -305,14 +321,14 @@ return (
           </div>
         )}
         <p className="px-8 text-center text-sm text-muted-foreground">
-          By clicking continue, you agree to our
+          By clicking continue, you agree to our{" "}
           <Link
             href="/terms"
             className="underline underline-offset-4 hover:text-primary"
           >
             Terms of Service
-          </Link>
-          and
+          </Link>{" "}
+          and{" "}
           <Link
             href="/privacy"
             className="underline underline-offset-4 hover:text-primary"

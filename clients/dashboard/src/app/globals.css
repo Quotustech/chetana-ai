@@ -211,3 +211,39 @@ span.flatpickr-weekday,
   background: #b3b1b1;
   cursor: pointer;
 }
+
+
+/* Add custom styles for ApexCharts export menu */
+
+/* Custom styles for ApexCharts export menu */
+.apexcharts-menu {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center; /* Center align horizontally */
+  margin: 0 auto; /* Center the container */
+}
+
+.apexcharts-menu-item {
+  margin: 5px; /* Space around each item */
+  padding: 5px 10px; /* Padding for better click area */
+  text-align: center; /* Center align text */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  /* background-color: #e5e7eb; Gray-200 equivalent */
+  border: 1px solid #d1d5db; /* Gray-300 equivalent */
+}
+
+.apexcharts-menu-item:hover {
+  background-color: #d1d5db; /* Gray-300 equivalent on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .apexcharts-menu {
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: center; /* Center align items vertically */
+  }
+
+  .apexcharts-menu-item {
+    margin: 10px 0; /* Space between items when stacked */
+  }
+}

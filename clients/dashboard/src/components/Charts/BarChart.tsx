@@ -100,6 +100,13 @@ const BarChart: React.FC = () => {
     chart: {
       height: 350,
       type: "bar",
+      //new add
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+        },
+      },
     },
     plotOptions: {
       bar: {
