@@ -66,7 +66,7 @@ const CreateUserForm = () => {
     if (!orgFormData.password.trim()) {
       validationErrors.password = "Password is required and must contain at least 8 characters";
     } else if (!regex.test(orgFormData.password.trim())) {
-      validationErrors.password = "Password must contain at least 8 characters .Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+      validationErrors.password = "Password must contain at least 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
     
     if (Object.keys(validationErrors).length > 0) {

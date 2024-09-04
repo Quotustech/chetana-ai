@@ -63,7 +63,9 @@ const SignIn: React.FC = () => {
           }else if(login.rejected.match(result)){
             const err = result.payload as { response: { data: any } };
             // console.log("+++++++++++", err.response.data);
-            toast.error(err.response.data.message)
+            // toast.error(err.response.data.message)
+            toast.error("Invalid email address")
+
           }
         })
       setFormData(initialState);

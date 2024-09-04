@@ -309,9 +309,14 @@ const Search = () => {
     }) => {
       if (e.ctrlKey && e.key === "k") {
         e.preventDefault();
-        if (!recentlyGroupCreated) {
-          await dispatch(createNewGroup(user?._id));
-        }
+        await dispatch(createNewGroup(user?._id));
+        // if (!recentlyGroupCreated) {
+        //   console.log("Group  not created")
+        //   await dispatch(createNewGroup(user?._id));
+        // }
+        // else{
+        //   console.log("Group already created")  
+        // }
       }
     };
 

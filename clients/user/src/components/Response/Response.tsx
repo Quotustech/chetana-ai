@@ -32,7 +32,8 @@ const Response:React.FC<ResponseProps> =({data}) => {
         <div className="question w-full flex gap-3 items-center px-4 py-2 rounded-lg relative lg:min-h-16 min-h-8">
           <div className="w-10 h-10 border border-black-600 lg:p-1 rounded-full bg-gray-200 dark:bg-[#0e1525] absolute top-2 flex justify-center items-center">
             {/* <LiaUserSolid className="text[1.5rem] lg:text-4xl " /> */}
-            T
+            {/* T */}
+            {getUserInitial()}
           </div>
 
           {/* <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold text-black mr-4 ">
@@ -58,7 +59,8 @@ const Response:React.FC<ResponseProps> =({data}) => {
           <div className="w-10 h-10 border border-black-600 lg:p-1 rounded-full bg-gray-200 dark:bg-[#0e1525] absolute top-2 flex justify-center items-center">
 
             {/* <LiaUserSolid className="text[1.5rem] lg:text-4xl " /> */}
-            {getUserInitial()}
+            {/* {getUserInitial()} */}
+            T
           </div>
 
           {/* <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold text-black mr-4">
