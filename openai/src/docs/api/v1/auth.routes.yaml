@@ -111,7 +111,8 @@ paths:
                 - password
               example:
                 email: user@gmail.com
-                password:       responses:
+                password:       
+      responses:
         "200":
           description: User login successful
           content:
