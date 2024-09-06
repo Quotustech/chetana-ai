@@ -241,8 +241,6 @@
 
 // export default Search;
 
-
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -257,7 +255,8 @@ import { Chat } from "@/common/interfaces/chat.interface";
 import {
   setGroups,
   setResponding,
-  setSelcetedGroup,
+  setSelectedGroup,
+  // setSelcetedGroup,
   setRecentlyGroupCreated,
   setInitialPrompt,
 } from "@/redux/slices/chat/chatSlice";
@@ -284,7 +283,9 @@ type ActionResult = {
 
 const Search = () => {
   const dispatch = useDispatch();
+  // const { user } = useSelector((state: RootState) => state.authReducer);
   const { user } = useSelector((state: RootState) => state.authReducer);
+
   const {
     groups,
     selectedGroup,
@@ -296,10 +297,16 @@ const Search = () => {
   const [isListening, setIsListening] = useState<boolean>(false);
   const [transcribedText, setTranscribedText] = useState<string>("");
 
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  recognition.lang = 'en-US';
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
+  recognition.lang = "en-US";
   // recognition.interimResults = false;
   recognition.interimResults = true;
+
+  // if (!recognition) {
+  //   toast.error("SpeechRecognition is not supported in this browser.");
+  //   return <div>Your browser does not support speech recognition.</div>;
+  // }
 
   useEffect(() => {
     const handleKeyDown = async (e: {
@@ -311,11 +318,12 @@ const Search = () => {
         e.preventDefault();
         await dispatch(createNewGroup(user?._id));
         // if (!recentlyGroupCreated) {
+        //   console.log("recent",recentlyGroupCreated)
         //   console.log("Group  not created")
         //   await dispatch(createNewGroup(user?._id));
         // }
         // else{
-        //   console.log("Group already created")  
+        //   console.log("Group already created")
         // }
       }
     };
@@ -330,7 +338,7 @@ const Search = () => {
   const processDataChunk = async (
     streamData: OpenAiRes,
     group: ChatGroup,
-    localGroups: ChatGroup[],
+    localGroups: ChatGroup[]
   ) => {
     if (!streamData || !streamData.payload) return;
 
@@ -347,7 +355,7 @@ const Search = () => {
       const { done, value } = readerResult;
       if (done) {
         const updatedGroups = localGroups.map((group) =>
-          group._id === updatedGroup._id ? updatedGroup : group,
+          group._id === updatedGroup._id ? updatedGroup : group
         );
         dispatch(setGroups(updatedGroups));
         dispatch(setRecentlyGroupCreated(false));
@@ -364,7 +372,7 @@ const Search = () => {
         ...group,
         chats: group.chats && [...group.chats, updatedStreamedData],
       };
-      dispatch(setSelcetedGroup(updatedGroup));
+      dispatch(setSelectedGroup(updatedGroup));
     }
   };
 
@@ -402,7 +410,7 @@ const Search = () => {
             processDataChunk(
               result as OpenAiRes,
               group as ChatGroup,
-              localGroups as ChatGroup[],
+              localGroups as ChatGroup[]
             );
 
             setPrompt("");
@@ -456,21 +464,21 @@ const Search = () => {
   // Handle speech recognition result
   recognition.onresult = (event) => {
     const interimTranscript = Array.from(event.results)
-    .map(result => result[0].transcript)
-    .join('');
-  setTranscribedText(interimTranscript);
+      .map((result) => result[0].transcript)
+      .join("");
+    setTranscribedText(interimTranscript);
 
-  if (event.results[0].isFinal) {
-    setPrompt(interimTranscript);
+    if (event.results[0].isFinal) {
+      setPrompt(interimTranscript);
+      stopListening();
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error:", event.error);
+    toast.error("Error occurred in speech recognition: " + event.error);
     stopListening();
-  }
-};
-
-recognition.onerror = (event) => {
-  console.error("Speech recognition error:", event.error);
-  toast.error("Error occurred in speech recognition: " + event.error);
-  stopListening();
-};
+  };
   //   const speechResult = event.results[0][0].transcript;
   //   setPrompt(speechResult);
   //   stopListening();
@@ -485,55 +493,75 @@ recognition.onerror = (event) => {
   return (
     <div className="flex flex-col items-center justify-center gap-5">
       <form
-        className="relative flex w-full max-w-3xl items-center space-x-2 rounded-md border border-gray-300 bg-transparent outline-none dark:bg-[#2b3245]"
+        //   className="relative flex w-full max-w-3xl items-center space-x-2 rounded-md border border-gray-300 bg-transparent outline-none dark:bg-[#2b3245]"
+        //   onSubmit={submitHandler}
+        // >
+        className="relative flex flex-col w-full max-w-3xl rounded-md border border-gray-300 bg-white dark:bg-[#2b3245] dark:text-gray-300 shadow-sm"
         onSubmit={submitHandler}
       >
-        <TextareaAutosize
-          minRows={1}
-          maxRows={15}
-          id="voice-search"
-          style={{ resize: "none" }}
-          className="text-smblock w-full rounded-md border border-none border-blue-600 p-[.6rem] text-black outline-none focus:border-none dark:bg-[#2b3245] dark:text-gray-300"
-          placeholder="Ask Your Query..."
-          required
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          onKeyDown={handleKeyDown}
-          autoFocus={true}
-        />
-        <Button
-          type="button"
-          onClick={isListening ? stopListening : startListening}
-          className="absolute bottom-[1.5px] right-[50px] bg-white p-1 text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
-        >
-          <Mic className={`w-8 ${isListening ? "text-red-500" : ""}`} />
-        </Button>
-        <Button
-          disabled={responding}
-          type="submit"
-          className="absolute bottom-[1.5px] right-[3px] bg-white p-1 text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
-        >
-          {responding ? (
-            <Bars
-              height="30"
-              width="30"
-              color="black"
-              ariaLabel="bars-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
-          ) : (
-            // <ArrowUp className="w-8" />
-            // <FaTelegramPlane className="w-8" />
-            <FaTelegramPlane size={24} />
-          )}
-        </Button>
+        <div className="flex-1 overflow-hidden relative">
+        {/* <div className="absolute inset-0 p-2.5 flex items-end"> */}
+          <TextareaAutosize
+            minRows={1}
+            // maxRows={15}
+            maxRows={15}
+            id="voice-search"
+            // style={{
+            //   resize: "none",
+            //   // : "200px",
+            //   // overflowY: "auto",
+            // }}
+            className="text-smblock w-full rounded-md border border-none border-blue-600 p-[.6rem] text-black outline-none focus:border-none dark:bg-[#2b3245] dark:text-gray-300 max-h-20 overflow-y-auto resize-none pr-24"
+            placeholder="Ask Your Query..."
+            required
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={handleKeyDown}
+            autoFocus={true}
+          />
+          {/* </div> */}
+          <Button
+            type="button"
+            
+            onClick={isListening ? stopListening : startListening}
+            //   className="absolute bottom-[1.5px] right-[50px] bg-white p-1 text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
+            // >
+            className="absolute bottom-2 right-16 bg-white p-1 rounded-md text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
+            >
+            <Mic className={`w-8 ${isListening ? "text-red-500" : ""}`} />
+          </Button>
+          <Button
+            disabled={responding}
+            type="submit"
+            //   className="absolute bottom-[1.5px] right-[3px] bg-white p-1 text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
+            // >
+            className="absolute bottom-2 right-3 bg-white p-2 rounded-md text-black hover:text-white dark:bg-[#2b3245] dark:text-white dark:hover:bg-gray-500 dark:hover:text-black"
+    >
+
+            {responding ? (
+              <Bars
+                height="30"
+                width="30"
+                color="black"
+                ariaLabel="bars-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            ) : (
+              // <ArrowUp className="w-8" />
+              // <FaTelegramPlane className="w-8" />
+              <FaTelegramPlane size={22} />
+            )}
+          </Button>
+        </div>
       </form>
       {isListening && (
         <div className="fixed bottom-10 right-10 z-50 w-80 p-4 bg-white border border-gray-300 shadow-lg dark:bg-[#2b3245] dark:text-white">
           <p className="text-center">I'm listening, say something...</p>
-          <p className="mt-2 p-2 border border-dashed border-gray-400 rounded-md">{transcribedText}</p>
+          <p className="mt-2 p-2 border border-dashed border-gray-400 rounded-md">
+            {transcribedText}
+          </p>
         </div>
       )}
       <footer className="hidden md:block">

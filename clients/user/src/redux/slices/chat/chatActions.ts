@@ -112,10 +112,62 @@ export const createNewGroup = createAsyncThunk(
       //   `Error from createAsyncThunk [${createNewGroup.pending.type}]:`,
       //   error
       // );
+      console.log("error from create group thunp api" , error)
       return thunkAPI.rejectWithValue({ errorMessage: error.message });
     }
   }
 );
+
+
+// export const createNewChatInGroup = createAsyncThunk(
+//   "chat/createNewChatInGroup",
+//   async (groupId: string, thunkAPI) => {
+//     try {
+//       const response = await axios.post(`/api/chat/${groupId}/new-chat`);
+//       return response.data;
+//     } catch (error: any) {
+//       return thunkAPI.rejectWithValue({errorMessage: error.message});
+//     }
+//   }
+// );
+
+// export const createNewChatInGroup = createAsyncThunk(
+//   "chat/createNewChatInGroup",
+//   async (groupId: string, thunkAPI) => {
+//     try {
+//       const token = Cookies.get("authToken");
+      
+//       // Fetch the initial state for conditional logic if needed
+//       const state: RootState = thunkAPI.getState() as RootState;
+      
+//       // Post the new chat to the specified group
+//       const res = await axios.post<ResObject<Chat>>(
+//         `${ApiUrl}/api/v1/chat/${groupId}/new-chat`,
+//         {}, // You can include the chat message or any other data here
+//         {
+//           headers: {
+//             Authorization: "Bearer " + token,
+//           },
+//         }
+//       );
+      
+//       if (res.data.success) {
+//         const newChat: Chat = res.data.data;
+        
+//         // Optionally, you could also update the group's chats here
+//         // e.g., thunkAPI.dispatch(updateGroupChats({ groupId, newChat }));
+        
+//         return newChat;
+//       } else {
+//         throw new Error("Error while creating new chat");
+//       }
+//     } catch (error: any) {
+//       console.log("Error creating new chat in group: ", error.message);
+//       return thunkAPI.rejectWithValue({ errorMessage: error.message });
+//     }
+//   }
+// );
+
 
 export const getAllChatByGroupId = createAsyncThunk(
   "chat/get-all-chat-by-group-id",

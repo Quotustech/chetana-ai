@@ -60,7 +60,9 @@ export default function Register() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { organizations , departments } = useSelector(
-    (state: RootState) => state.authReducer
+    // (state: RootState) => state.authReducer
+        (state: RootState) => state.authReducer
+
   );
 
   const [selectedOrg, setSelectedOrg] = useState<Organization>({} as Organization);
@@ -155,9 +157,7 @@ export default function Register() {
 
   return (
     <>
-    <Head>
-        <title>TechMate-Register</title>
-      </Head>
+    
       {/* <div className="h-svh bg-white flex relative w-full"> */}
       <div className="min-h-screen bg-white flex relative w-full">
         <div className="absolute hidden lg:block w-full h-full bg-white">
@@ -268,7 +268,7 @@ export default function Register() {
             </Card>
           </form>
           <p className="px-8 text-center text-sm text-muted-foreground">
-            By clicking continue, you agree to our{" "}
+            By clicking continue, you agree to our{' '}
             <Link
               href="/terms"
               className="underline underline-offset-4 hover:text-primary"

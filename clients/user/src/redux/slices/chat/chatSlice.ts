@@ -2,6 +2,8 @@ import { Draft, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Chat } from "@/common/interfaces/chat.interface";
 import { ChatGroup } from "@/common/interfaces/chatGroup.interface";
 import { createNewGroup, getChats, getGroups } from "./chatActions";
+import { logout, login } from "../auth/authActions";
+ 
 
 type InitialState = {
   chats: Chat[];
@@ -41,11 +43,12 @@ const chatSlice = createSlice({
     ) {
       state.groups.unshift(action.payload);
     },
-    setSelcetedGroup(
+    setSelectedGroup(
       state: Draft<typeof initialState>,
       action: PayloadAction<(typeof initialState)["selectedGroup"]>,
     ) {
       state.selectedGroup = action.payload;
+      state.recentlyGroupCreated = false
     },
     setResponding(
       state: Draft<typeof initialState>,
@@ -88,16 +91,31 @@ const chatSlice = createSlice({
       })
       .addCase(createNewGroup.fulfilled, (state, { payload }) => {
         const group = { ...payload.data, chats: [] };
-        // console.log("group from addcase", group);
+        console.log("group from addcase", group);
         // state.groups.unshift(group)
         // console.log("groups array from addcase", state.groups);
         state.selectedGroup = group;
         state.recentlyGroupCreated = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.recentlyGroupCreated = false;
+      })
+      .addCase(login.fulfilled, (state) => {
+        state.recentlyGroupCreated = false;
       });
+      // .addCase(createNewChatInGroup.fulfilled, (state, action) => {
+      //   const updatedGroup = state.groups.find(
+      //     (group) => group._id === action.meta.arg
+      //   );
+      //   if (updatedGroup) {
+      //     updatedGroup.chats = updatedGroup.chats ?? []; 
+      //     updatedGroup.chats.push(action.payload); // Add the new chat to the selected group
+      //   }
+      // });
   },
 });
 
-export const { setGroups, setSelcetedGroup, setResponding, updateGroups , setShowModal , setModalContent , setRecentlyGroupCreated , setInitialPrompt} =
+export const { setGroups, setSelectedGroup, setResponding, updateGroups , setShowModal , setModalContent , setRecentlyGroupCreated , setInitialPrompt} =
   chatSlice.actions;
 
 export default chatSlice.reducer;

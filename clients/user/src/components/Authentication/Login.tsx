@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,13 +62,6 @@ export default function Login() {
     router.push("/app");
   }
 
-  // Reset form data and errors when the component mounts
-  useEffect(() => {
-    setFormData(initialState);
-    setErrors({});
-  }, []);
-
-
   // Function to handle input changes
   const handleInputChange = (e: {
     target: { name: string; value: string };
@@ -78,16 +71,8 @@ export default function Login() {
 
     setErrors((prevErrors) => {
       const updatedErrors = { ...prevErrors };
-      // if (name === "email" && !loginSchema.shape.email.safeParse(value).success) {
-      //   delete updatedErrors.email;
-      // }
-      if (name === "email") {
-        const emailValidation = loginSchema.shape.email.safeParse(value);
-        if (emailValidation.success) {
-          delete updatedErrors.email; // Clear email error if the input is valid
-        } else {
-          updatedErrors.email = emailValidation.error.errors[0].message;
-        }
+      if (name === "email" && !loginSchema.shape.email.safeParse(value).success) {
+        delete updatedErrors.email;
       }
       if (name === "password" && value.length >= 8) {
         delete updatedErrors.password;
@@ -108,9 +93,6 @@ export default function Login() {
           const payload = result.payload;
           if (payload.success) {
             toast.success(payload.message);
-            // Clear form data and errors on successful login
-            setFormData(initialState);
-            setErrors({});
             router.push("/app");
           }
         } else if (login.rejected.match(result)) {

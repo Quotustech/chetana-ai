@@ -15,7 +15,9 @@ interface ResponseProps {
 
 const Response:React.FC<ResponseProps> =({data}) => {
   const { showModal } = useSelector(
+    // (state: RootState) => state.chatReducer
     (state: RootState) => state.chatReducer
+
   );
   // const [showModal, setShowModal] = useState<boolean>(false);
   const lines = data.answer ? data.answer.split("```") : [];
