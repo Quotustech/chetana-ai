@@ -116,7 +116,7 @@ export const forgetPassword = CatchAsyncError(
     user.resetPasswordExpires = resetTokenExpiry;
     await user.save();
 
-    const resetLink = `http://techmatebot.com/reset-password/${resetToken}`;
+    const resetLink = `http://techmatebot.com/auth/reset-password/${resetToken}`;
     // const resetLink = `http://localhost:3000/auth/reset-password/${resetToken}`;
     const emailOptions = {
       email: user.email,

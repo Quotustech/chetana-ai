@@ -4,11 +4,11 @@ services:
   openai:
     container_name: openai
     restart: unless-stopped
-    image: openai-production:1.0.0
     build:
-      context: openai
+      context: ./openai
       target: production
       dockerfile: Dockerfile
+    image: openai-production:1.0.0
     ports:
       - 5000:5000
     networks:
@@ -17,11 +17,11 @@ services:
   user:
     container_name: client-user
     restart: unless-stopped
-    image: client-user-production:1.0.0
     build:
       context: ./clients/user
       target: production
       dockerfile: Dockerfile
+    image: client-user-production:1.0.0
     ports:
       - 3001:3001
     networks:
@@ -32,11 +32,11 @@ services:
   dashboard:
     container_name: client-dashboard
     restart: unless-stopped
-    image: client-dashboard-production:1.0.0
     build:
       context: ./clients/dashboard
       target: production
       dockerfile: Dockerfile
+    image: client-dashboard-production:1.0.0
     ports:
       - 3000:3000
     networks:
@@ -51,7 +51,7 @@ services:
   redis:
     container_name: redis
     hostname: redis
-    image: redis
+    image: redis:latest
     command: >
       --include /usr/local/etc/redis/redis.conf
     volumes:
@@ -69,5 +69,12 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
       - shared-network
+
+  ffmpeg:
+    container_name: ffmpeg
+    image: jrottenberg/ffmpeg:latest
+    networks:
+      - shared-network
+
 networks:
   shared-network:
